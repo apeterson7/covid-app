@@ -1,0 +1,82 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+    <h1 class="display-4">Covid 19 Dashboard</h1>
+        <p class="lead">Statistics pulled from The Weather Company</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div *ngIf="this.errorMsg">{{this.errorMsg}}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card" *ngIf="!this.errorMsg">
+                <div class="card-body">
+                    <h5 class="card-title">60 Day History</h5>
+                    <div class="chart-wrapper">
+                        <canvas baseChart 
+                            [datasets]="lineChartData" 
+                            [labels]="lineChartLabels" 
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors" 
+                            [legend]="lineChartLegend" 
+                            [chartType]="lineChartType" 
+                            [plugins]="lineChartPlugins">
+                        </canvas>
+                    </div>
+                    <p>Record Type: {{covid19.recordType}}</p>
+                    <p>Record Location: {{covid19.recordLocation}}</p>
+                    <p *ngIf="zipcode">Zipcode: {{zipcode}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Click on a location to view Covid-19 Data</h5>
+                    <agm-map 
+                        [latitude]="lat" 
+                        [longitude]="long" 
+                        (mapClick)="changeCoordinates($event.coords.lat, $event.coords.lng)">
+                    </agm-map>
+                    <p>{{lat}}, {{long}}</p>
+                    <h5 class="card-title">Or by United States zipcode: </h5>
+                    <form class="form-inline" (ngSubmit)="changeZip()" #zipcodeForm="ngForm">
+                        <div class="form-group mx-sm-3 mb-2">
+                          <label for="zipcode" class="sr-only">Zipcode</label>
+                          <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" [(ngModel)]="zipcode" name="answer" #answer="ngModel" >
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Data Sources</h5>
+                    <p class="card-text" *ngFor="let src of covid19.source">{{src}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Links</h5>
+                    <p class="card-text" *ngFor="let srcUrl of covid19.sourceURL"><a [href]="srcUrl">{{srcUrl}}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+
+
+
+
